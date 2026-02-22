@@ -3769,4 +3769,22 @@
     <address>York Road Shell Centre London, SE1 7NA</address>
     <country>GB</country>
   </company>
+  <company>
+    <isin>SI0031101346</isin>
+    <conid>753471953</conid>
+    <symbol>LKPG</symbol>
+    <name>Luka Koper d.d.</name>
+    <taxNumber>SI89190033</taxNumber>
+    <address>Vojkovo nabrežje 38, 6501 Koper</address>
+    <country>SI</country>
+  </company>
+  <company>
+    <isin>FI0009013296</isin>
+    <conid>33815032</conid>
+    <symbol>NEF</symbol>
+    <name>NESTE OYJ</name>
+    <taxNumber>FI18523029</taxNumber>
+    <address>Keilaranta 21, 02150 Espoo</address>
+    <country>FI</country>
+  </company>
 </companies>
