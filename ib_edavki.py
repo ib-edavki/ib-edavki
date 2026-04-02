@@ -24,6 +24,8 @@ userAgent = 'ib-edavki'
 
 stockSplits = defaultdict(list)
 cusipIsinChanges = defaultdict(list)
+isinSplitMappings = {}   # old_isin -> new_isin  (for splits that change ISIN/conid)
+conidSplitMappings = {}   # old_conid -> new_conid
 
 
 def getSplitMultiplier(symbol, conid, date, time):
@@ -35,22 +37,70 @@ def getSplitMultiplier(symbol, conid, date, time):
     if key not in stockSplits:
         return multiplier
 
-    for splitData in stockSplits[key]:
-        if datetime.datetime.strptime(date + " " + time, "%Y%m%d %H%M%S") < splitData["dateTime"]:
-            multiplier *= splitData["multiplier"]
-
+    # Only apply split adjustment to trades BEFORE the split date
+    if len(stockSplits[key]) > 0:
+        tradeDateTime = datetime.datetime.strptime(date + " " + time, "%Y%m%d %H%M%S")
+        splitDateTime = stockSplits[key][0]["dateTime"]
+        
+        # If trade is BEFORE split, return the multiplier to adjust price
+        if tradeDateTime < splitDateTime:
+            return stockSplits[key][0]["multiplier"]
+    
     return multiplier
 
 
-""" Stores stock splits with multiplier by date and time
+""" Stores stock splits with multiplier by date and time.
+    Also detects ISIN-changing splits (where IB emits TWO CorporateAction entries
+    with the same actionID but different conids) and populates isinSplitMappings,
+    conidSplitMappings, and cusipIsinChanges so that old-ISIN trades are merged
+    with new-ISIN trades during trade grouping.
 """
 def addStockSplits(corporateActions):
+    # First pass: group split CAs by actionID to detect multi-conid (ISIN-changing) splits
+    splitsByActionId = defaultdict(list)
     for action in corporateActions:
         description = action.attrib["description"]
         descriptionSearch = re.search(r"SPLIT (.+) FOR (.+) \(", description)
         if descriptionSearch is not None:
-            # we have to extract split information from description since IB does not provide
-            # any information on what the corporate action is
+            splitsByActionId[action.attrib["actionID"]].append(action)
+
+    # Second pass: process each split group
+    for actionID, actions in splitsByActionId.items():
+        # Detect multi-conid (ISIN-changing) split: same actionID, different conids
+        conids = set(a.attrib["conid"] for a in actions)
+        if len(conids) > 1 and len(actions) == 2:
+            # Find old side (negative quantity) and new side (positive quantity)
+            oldAction = None
+            newAction = None
+            for a in actions:
+                qty = float(a.attrib["quantity"])
+                if qty < 0:
+                    oldAction = a
+                elif qty > 0:
+                    newAction = a
+            if oldAction is not None and newAction is not None:
+                oldConid = oldAction.attrib["conid"]
+                newConid = newAction.attrib["conid"]
+                oldIsin = oldAction.attrib.get("isin", "")
+                newIsin = newAction.attrib.get("isin", "")
+                oldCusip = oldAction.attrib.get("cusip", "")
+                newCusip = newAction.attrib.get("cusip", "")
+                symbol = newAction.attrib["symbol"]
+
+                conidSplitMappings[oldConid] = newConid
+                if oldIsin and newIsin and oldIsin != newIsin:
+                    isinSplitMappings[oldIsin] = newIsin
+                    cusipIsinChanges[oldIsin] = newIsin
+                    print(f"  ISIN-changing split detected: {symbol} {oldIsin} -> {newIsin} (conid {oldConid} -> {newConid})")
+                if oldCusip and newCusip and oldCusip != newCusip:
+                    cusipIsinChanges[oldCusip] = newCusip
+
+        # Process each action in this group for stockSplits registration
+        for action in actions:
+            description = action.attrib["description"]
+            descriptionSearch = re.search(r"SPLIT (.+) FOR (.+) \(", description)
+            if descriptionSearch is None:
+                continue
 
             multiplier = float(descriptionSearch.group(1)) / float(
                 descriptionSearch.group(2)
@@ -64,7 +114,7 @@ def addStockSplits(corporateActions):
             try:
                 strDateTime = action.attrib["dateTime"].split(";")
                 strDate = strDateTime[0]
-                strTime = strDateTime[1]
+                strTime = strDateTime[1] if len(strDateTime) > 1 else "000000"
             except:
                 print("Stock split Corporate Action for conid='" + conid + "' (symbol '" + symbol + "') has issues with dateTime attributes (" + action.attrib["dateTime"] + "), which is a crucial stock split information!")
                 return
@@ -74,12 +124,9 @@ def addStockSplits(corporateActions):
                 print("Stock split Corporate Action for conid='" + conid + "' (symbol '" + symbol + "') has issues with date and time attribute (" + strDate, strTime + "), which is a crucial stock split information!")
                 return               
 
-            # check if the same split was added from a different report
-            for split in stockSplits[key]:
-                if split["dateTime"] == dateTime and split["multiplier"] == multiplier:
-                    continue
-
-            stockSplits[key].append({"dateTime": dateTime, "multiplier": multiplier})
+            # Only add one split per security - skip if already exists
+            if key not in stockSplits:
+                stockSplits[key] = [{"dateTime": dateTime, "multiplier": multiplier}]
 
 
 def getLatestCusipIsin(cusipIsin):
@@ -397,7 +444,7 @@ def main():
             try:
                 dateTime = ibTrade.attrib["dateTime"].split(";")
                 date = dateTime[0]
-                time = dateTime[1]
+                time = dateTime[1] if len(dateTime) > 1 else "000000"
             except:
                 date = ibTrade.attrib["tradeDate"]
                 try:
@@ -432,8 +479,7 @@ def main():
                     trade["symbol"], trade["conid"], date, time
                 )
 
-                trade["quantity"] *= splitMultiplier
-                trade["tradePrice"] /= splitMultiplier
+                trade["tradePrice"] /= splitMultiplier if splitMultiplier != 1 else 1
 
                 if ibTrade.attrib["securityID"] != "":
                     trade["securityID"] = ibTrade.attrib["securityID"]
@@ -481,21 +527,13 @@ def main():
                     lastTrade["openTransactionIds"] = {}
                 tid = ibTrade.attrib["transactionID"]
 
-                splitMultiplier = getSplitMultiplier(
-                    ibTrade.attrib["symbol"], ibTrade.attrib["conid"], date, time
-                )
-
                 if tid not in lastTrade["openTransactionIds"]:
                     lastTrade["openTransactionIds"][tid] = {
                         "openDateTime": ibTrade.attrib["openDateTime"],
-                        "quantity": (
-                        float(ibTrade.attrib["quantity"]) * splitMultiplier
-                        ),
+                        "quantity": float(ibTrade.attrib["quantity"]),
                     }
                 else:
-                    lastTrade["openTransactionIds"][tid]["quantity"] += (
-                        float(ibTrade.attrib["quantity"]) * splitMultiplier
-                    )
+                    lastTrade["openTransactionIds"][tid]["quantity"] += float(ibTrade.attrib["quantity"])
 
     """
         Merge tradesByIsin, tradesByCusip, tradesBySecurityId, tradesByConid  and tradesBySymbol
@@ -575,6 +613,10 @@ def main():
                     del openTrade["openTransactionIds"]
                     xtrades.append(closeTrade)
                     xtrades.append(openTrade)
+                    # Update tradesByTransactionID: the original object is replaced
+                    # by two copies. Point to openTrade so future close-trade lots
+                    # that reference this transactionID can find it as an "O" trade.
+                    tradesByTransactionID[trade["transactionID"]] = openTrade
         trades[securityID] = xtrades
 
     """ Detect if trades are Normal or Derivates and if they are Opening or Closing positions
@@ -621,7 +663,7 @@ def main():
         for trade in trades[securityID]:
             if (
                 trade["tradeDate"][0:4] == str(reportYear)
-                and trade["openCloseIndicator"] == "C"
+                and "C" in trade["openCloseIndicator"]
             ):
                 if securityID not in yearTrades:
                     yearTrades[securityID] = []
@@ -646,7 +688,7 @@ def main():
                     else:
                         """ Get the corresponding open trade (which may have different initial securityID) """
                         xtrade = tradesByTransactionID[tid]
-                        if (xtrade["openCloseIndicator"] == "O"):
+                        if "O" in xtrade["openCloseIndicator"]:
                             ctrade = copy.copy(xtrade)
                             ctrade["quantity"] = trade["openTransactionIds"][tid]["quantity"]
                             yearTrades[securityID].append(ctrade)
@@ -719,6 +761,169 @@ def main():
                 sys.exit(
                     "Error: cannot figure out if trade is Normal or Derivate, Long or Short"
                 )
+
+    """ Fix F8 balance violations by re-simulating position changes.
+
+        FURS eDavki requires:
+          - Securities (long):      running balance (F8/Zaloga) >= 0 at every row
+          - SecuritiesShort (short): running balance (F8/Zaloga) <= 0 at every row
+
+        IB's per-trade openCloseIndicator classification doesn't guarantee this
+        invariant when a security has mixed long/short activity. We fix it by:
+        1. Merging all trades for each security into one chronological list
+        2. Simulating the running position
+        3. Assigning each trade to long or short based on actual position state
+        4. Splitting trades that cross the zero boundary
+    """
+    def fixF8Violations(longTrades, shortTrades):
+        # Collect all securityIDs that exist in either dict
+        allIDs = set(list(longTrades.keys()) + list(shortTrades.keys()))
+        fixCount = 0
+
+        for securityID in allIDs:
+            longs = longTrades.get(securityID, [])
+            shorts = shortTrades.get(securityID, [])
+
+            # Quick check: does this security need fixing?
+            # Simulate F8 for longs
+            needsFix = False
+            f8 = 0
+            for t in longs:
+                f8 += t["quantity"]
+                if f8 < -0.001:
+                    needsFix = True
+                    break
+            if not needsFix:
+                f8 = 0
+                for t in shorts:
+                    f8 += t["quantity"]
+                    if f8 > 0.001:
+                        needsFix = True
+                        break
+            if not needsFix:
+                continue
+
+            # Merge all trades and sort chronologically
+            # Within same date+time, buys before sells (minimizes position crossings)
+            allTrades = longs + shorts
+            allTrades.sort(key=lambda t: (
+                t["tradeDate"],
+                t["tradeTime"],
+                0 if t["quantity"] > 0 else 1  # buys first within same timestamp
+            ))
+
+            newLongs = []
+            newShorts = []
+            position = 0.0
+
+            for trade in allTrades:
+                qty = trade["quantity"]
+
+                if abs(qty) < 1e-9:
+                    continue
+
+                if position >= 0:
+                    # Currently long or flat
+                    if qty > 0:
+                        # Buying more → stays long
+                        newLongs.append(trade)
+                        position += qty
+                    else:
+                        # Selling
+                        sellQty = -qty  # positive number
+                        if sellQty <= position + 1e-9:
+                            # Selling within long inventory → stays long
+                            newLongs.append(trade)
+                            position += qty
+                        else:
+                            # Selling more than long inventory → split
+                            if position > 0.001:
+                                # Part 1: close long position to zero
+                                longPart = copy.copy(trade)
+                                longPart["quantity"] = -position  # negative
+                                newLongs.append(longPart)
+                            # Part 2: open short position with remainder
+                            shortQty = sellQty - max(position, 0)
+                            if shortQty > 0.001:
+                                shortPart = copy.copy(trade)
+                                shortPart["quantity"] = -shortQty  # negative
+                                newShorts.append(shortPart)
+                            position = -(sellQty - max(position, 0))
+                else:
+                    # Currently short (position < 0)
+                    if qty < 0:
+                        # Selling more → stays short
+                        newShorts.append(trade)
+                        position += qty
+                    else:
+                        # Buying (covering)
+                        buyQty = qty  # positive number
+                        shortPos = -position  # positive number representing short size
+                        if buyQty <= shortPos + 1e-9:
+                            # Covering within short inventory → stays short
+                            newShorts.append(trade)
+                            position += qty
+                        else:
+                            # Covering more than short → split
+                            if shortPos > 0.001:
+                                # Part 1: close short to zero
+                                shortPart = copy.copy(trade)
+                                shortPart["quantity"] = shortPos  # positive
+                                newShorts.append(shortPart)
+                            # Part 2: open long with remainder
+                            longQty = buyQty - shortPos
+                            if longQty > 0.001:
+                                longPart = copy.copy(trade)
+                                longPart["quantity"] = longQty  # positive
+                                newLongs.append(longPart)
+                            position = buyQty - shortPos
+
+            # Sort the new lists chronologically (buys before sells on same date)
+            for lst in (newLongs, newShorts):
+                lst.sort(key=lambda t: (
+                    t["tradeDate"],
+                    t["tradeTime"],
+                    0 if t["quantity"] > 0 else 1
+                ))
+
+            # Verify F8 invariants
+            f8 = 0
+            longOk = True
+            for t in newLongs:
+                f8 += t["quantity"]
+                if f8 < -0.01:
+                    longOk = False
+                    break
+            f8 = 0
+            shortOk = True
+            for t in newShorts:
+                f8 += t["quantity"]
+                if f8 > 0.01:
+                    shortOk = False
+                    break
+
+            if longOk and shortOk:
+                if newLongs:
+                    longTrades[securityID] = newLongs
+                elif securityID in longTrades:
+                    del longTrades[securityID]
+                if newShorts:
+                    shortTrades[securityID] = newShorts
+                elif securityID in shortTrades:
+                    del shortTrades[securityID]
+                fixCount += 1
+                sym = newLongs[0]["symbol"] if newLongs else (newShorts[0]["symbol"] if newShorts else securityID)
+                print(f"  Fixed F8 violations for {sym}: {len(longs)}L+{len(shorts)}S → {len(newLongs)}L+{len(newShorts)}S trades")
+            else:
+                sym = allTrades[0]["symbol"] if allTrades else securityID
+                print(f"  WARNING: Could not fix F8 violations for {sym} (longOk={longOk}, shortOk={shortOk})")
+
+        return fixCount
+
+    normalFixes = fixF8Violations(longNormalTrades, shortNormalTrades)
+    derivateFixes = fixF8Violations(longDerivateTrades, shortDerivateTrades)
+    if normalFixes + derivateFixes > 0:
+        print(f"Fixed F8 violations for {normalFixes} normal + {derivateFixes} derivate securities")
 
     """ Generate the files for Normal """
     envelope = xml.etree.ElementTree.Element(

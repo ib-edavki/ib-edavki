@@ -1009,6 +1009,15 @@
     <country>US</country>
   </company>
   <company>
+    <isin>US46140H1068</isin>
+    <conid>319355717</conid>
+    <symbol>DBA</symbol>
+    <name>INVESCO DB AGRICULTURE FUND</name>
+    <taxNumber>US46140H1068</taxNumber>
+    <address>borzni posrednik ne zagotavlja tega podatka</address>
+    <country>US</country>
+  </company>
+  <company>
     <isin />
     <conid>110322264</conid>
     <symbol>DHT</symbol>
@@ -1016,6 +1025,15 @@
     <taxNumber>980497420</taxNumber>
     <address>Clarendon House, 2 Church Street, Hamilton HM 11</address>
     <country>BM</country>
+  </company>
+  <company>
+    <isin>US78467X1090</isin>
+    <conid>73128548</conid>
+    <symbol>DIA</symbol>
+    <name>SPDR DJIA TRUST</name>
+    <taxNumber>811-09170</taxNumber>
+    <address>11 Wall Street, New York, NY 10005</address>
+    <country>US</country>
   </company>
   <company>
     <isin />
@@ -1153,6 +1171,15 @@
     <country>US</country>
   </company>
   <company>
+    <isin>US4642861037</isin>
+    <conid>2586606</conid>
+    <symbol>EWA</symbol>
+    <name>ISHARES MSCI AUSTRALIA ETF</name>
+    <taxNumber>94-3351276</taxNumber>
+    <address>400 Howard Street, San Francisco, CA 94105</address>
+    <country>US</country>
+  </company>
+  <company>
     <isin />
     <conid>253190540</conid>
     <symbol>EWI</symbol>
@@ -1162,13 +1189,13 @@
     <country>IE</country>
   </company>
   <company>
-    <isin />
+    <isin>US4642867497</isin>
     <conid>2586589</conid>
     <symbol>EWL</symbol>
-    <name>iShares MSCI Switzerland ETF</name>
-    <taxNumber>IE8227552C</taxNumber>
-    <address>2 Ballsbridge Park, Dublin 4, Dublin D04 YW83</address>
-    <country>IE</country>
+    <name>ISHARES MSCI SWITZERLAND ETF</name>
+    <taxNumber>94-3351276</taxNumber>
+    <address>400 Howard Street, San Francisco, CA 94105</address>
+    <country>US</country>
   </company>
   <company>
     <isin />
@@ -1178,6 +1205,15 @@
     <taxNumber>8227552</taxNumber>
     <address>2 Ballsbridge Park, Dublin 4, Dublin D04 YW83</address>
     <country>IE</country>
+  </company>
+  <company>
+    <isin>US4642864007</isin>
+    <conid>10753244</conid>
+    <symbol>EWZ</symbol>
+    <name>ISHARES MSCI BRAZIL ETF</name>
+    <taxNumber>94-3351276</taxNumber>
+    <address>400 Howard Street, San Francisco, CA 94105</address>
+    <country>US</country>
   </company>
   <company>
     <isin />
@@ -1318,6 +1354,15 @@
     <name>General Dynamics Corp</name>
     <taxNumber>131673581</taxNumber>
     <address>11011 Sunset Hills Rd, Reston, VA 20190</address>
+    <country>US</country>
+  </company>
+  <company>
+    <isin>US92189F1066</isin>
+    <conid>229726316</conid>
+    <symbol>GDX</symbol>
+    <name>VANECK GOLD MINERS ETF</name>
+    <taxNumber>borzni posrednik ne zagotavlja tega podatka</taxNumber>
+    <address>borzni posrednik ne zagotavlja tega podatka</address>
     <country>US</country>
   </company>
   <company>
@@ -1708,6 +1753,24 @@
     <country>US</country>
   </company>
   <company>
+    <isin>US4642876555</isin>
+    <conid>9579970</conid>
+    <symbol>IWM</symbol>
+    <name>ISHARES RUSSELL 2000 ETF</name>
+    <taxNumber>94-3351276</taxNumber>
+    <address>400 Howard Street, San Francisco, CA 94105</address>
+    <country>US</country>
+  </company>
+  <company>
+    <isin>US4642877215</isin>
+    <conid>10158652</conid>
+    <symbol>IYW</symbol>
+    <name>ISHARES USTECHNOLOGY ETF</name>
+    <taxNumber>94-3351276</taxNumber>
+    <address>400 Howard Street, San Francisco, CA 94105</address>
+    <country>US</country>
+  </company>
+  <company>
     <isin />
     <conid>117901244</conid>
     <symbol>J91U</symbol>
@@ -1945,6 +2008,15 @@
     <country>US</country>
   </company>
   <company>
+    <isin>SI0031101346</isin>
+    <conid>753471953</conid>
+    <symbol>LKPG</symbol>
+    <name>Luka Koper d.d.</name>
+    <taxNumber>SI89190033</taxNumber>
+    <address>Vojkovo nabre&#382;je 38, 6501 Koper</address>
+    <country>SI</country>
+  </company>
+  <company>
     <isin />
     <symbol>LLY</symbol>
     <name>Eli Lilly and Company</name>
@@ -1977,6 +2049,15 @@
     <name>LIVE OAK BANCSHARES INC</name>
     <taxNumber>264596286</taxNumber>
     <address>1741 Tiburon Dr Wilmington, NC, 28403-6244 United State</address>
+    <country>US</country>
+  </company>
+  <company>
+    <isin>US4642872422</isin>
+    <conid>15547816</conid>
+    <symbol>LQD</symbol>
+    <name>ISHARES IBOXX INVESTMENT GRA</name>
+    <taxNumber>94-3351276</taxNumber>
+    <address>400 Howard Street, San Francisco, CA 94105</address>
     <country>US</country>
   </company>
   <company>
@@ -2093,6 +2174,15 @@
     <taxNumber>981183488</taxNumber>
     <address>20 On Hatch, Lower Hatch Street, Dublin, L2 2</address>
     <country>IE</country>
+  </company>
+  <company>
+    <isin>US78467Y1073</isin>
+    <conid>72195411</conid>
+    <symbol>MDY</symbol>
+    <name>SPDR S&amp;P MIDCAP 400 ETF TRST</name>
+    <taxNumber>US78467Y1073</taxNumber>
+    <address>11 Wall Street, New York, NY 10005</address>
+    <country>US</country>
   </company>
   <company>
     <isin>CA5889141019</isin>
@@ -2250,6 +2340,15 @@
     <country>US</country>
   </company>
   <company>
+    <isin>FI0009013296</isin>
+    <conid>33815032</conid>
+    <symbol>NEF</symbol>
+    <name>NESTE OYJ</name>
+    <taxNumber>FI18523029</taxNumber>
+    <address>Keilaranta 21, 02150 Espoo</address>
+    <country>FI</country>
+  </company>
+  <company>
     <isin />
     <conid>10174</conid>
     <symbol>NEM</symbol>
@@ -2344,6 +2443,15 @@
     <taxNumber>CHE-116.268.023</taxNumber>
     <address>Lichtstrasse 35, Basel, 4056</address>
     <country>CH</country>
+  </company>
+  <company>
+    <isin>DK0062498333</isin>
+    <conid>652806383</conid>
+    <symbol>NOVOBc</symbol>
+    <name>Novo Nordisk A/S &#8211; Series B</name>
+    <taxNumber>DK24256790</taxNumber>
+    <address>Novo Alle 1, 2880 BAGSVAERD</address>
+    <country>DK</country>
   </company>
   <company>
     <isin>US6410694060</isin>
@@ -2674,6 +2782,15 @@
     <country>IE</country>
   </company>
   <company>
+    <isin>US46090E1038</isin>
+    <conid>320227571</conid>
+    <symbol>QQQ</symbol>
+    <name>INVESCO QQQ TRUST SERIES 1</name>
+    <taxNumber>13-7173427</taxNumber>
+    <address>3500 Lacey Road, Downers Grove, IL 60515</address>
+    <country>US</country>
+  </company>
+  <company>
     <isin />
     <symbol>RDN</symbol>
     <name>Radian Group</name>
@@ -2784,6 +2901,15 @@
     <country>FR</country>
   </company>
   <company>
+    <isin>US37954Y4594</isin>
+    <conid>361439195</conid>
+    <symbol>RYLD</symbol>
+    <name>GLOBAL X RUSSELL 2000 COV CL</name>
+    <taxNumber>US37954Y4594</taxNumber>
+    <address>399 Park Avenue, New York, NY 10022</address>
+    <country>US</country>
+  </company>
+  <company>
     <isin />
     <conid>1322028</conid>
     <symbol>SAF</symbol>
@@ -2871,6 +2997,15 @@
     <taxNumber>11-1385670</taxNumber>
     <address>10055 Seminole Blvd, Seminole, Florida</address>
     <country>US</country>
+  </company>
+  <company>
+    <isin>GB00BP6MXD84</isin>
+    <conid>541411967</conid>
+    <symbol>SHELL</symbol>
+    <name>Shell plc</name>
+    <taxNumber>GB 235 7632 55</taxNumber>
+    <address>York Road Shell Centre London, SE1 7NA</address>
+    <country>GB</country>
   </company>
   <company>
     <isin />
@@ -3051,6 +3186,15 @@
     <country>JP</country>
   </company>
   <company>
+    <isin>US4642875235</isin>
+    <conid>12658194</conid>
+    <symbol>SOXX</symbol>
+    <name>ISHARES SEMICONDUCTOR ETF</name>
+    <taxNumber>94-3351276</taxNumber>
+    <address>400 Howard Street, San Francisco, CA 94105</address>
+    <country>US</country>
+  </company>
+  <company>
     <isin />
     <symbol>SPG</symbol>
     <name>Simon Property Group Inc</name>
@@ -3064,6 +3208,15 @@
     <name>S and P Global Inc.</name>
     <taxNumber>13-1026995</taxNumber>
     <address>55 Water Street, New York, New York</address>
+    <country>US</country>
+  </company>
+  <company>
+    <isin>US78462F1030</isin>
+    <conid>756733</conid>
+    <symbol>SPY</symbol>
+    <name>SPDR S&amp;P 500 ETF TRUST</name>
+    <taxNumber>811-06125</taxNumber>
+    <address>11 Wall Street, New York, NY 10005</address>
     <country>US</country>
   </company>
   <company>
@@ -3090,6 +3243,15 @@
     <taxNumber>CHE-116.291.855</taxNumber>
     <address>Mythenquai 50/60, 8002 Z&#252;rich</address>
     <country>CH</country>
+  </company>
+  <company>
+    <isin>US74347R1077</isin>
+    <conid>39622943</conid>
+    <symbol>SSO</symbol>
+    <name>PROSHARES ULTRA S&amp;P500</name>
+    <taxNumber>06-1663404</taxNumber>
+    <address>7272 Wisconsin Avenue, 21st Floor, Bethesda, MD 20814</address>
+    <country>US</country>
   </company>
   <company>
     <isin />
@@ -3270,6 +3432,15 @@
     <country>TR</country>
   </company>
   <company>
+    <isin>US4642874329</isin>
+    <conid>15547841</conid>
+    <symbol>TLT</symbol>
+    <name>ISHARES 20+ YEAR TREASURY BD</name>
+    <taxNumber>94-3351276</taxNumber>
+    <address>400 Howard Street, San Francisco, CA 94105</address>
+    <country>US</country>
+  </company>
+  <company>
     <isin />
     <symbol>TMO</symbol>
     <name>Thermo Fisher Scientific Inc</name>
@@ -3284,6 +3455,15 @@
     <taxNumber>9542051180</taxNumber>
     <address>Tour Coupole - 2, place Jean Millier - 92078 Paris La D&#233;fense Cedex &#8211; France</address>
     <country>FR</country>
+  </company>
+  <company>
+    <isin>US74347X8314</isin>
+    <conid>72539702</conid>
+    <symbol>TQQQ</symbol>
+    <name>PROSHARES ULTRAPRO QQQ</name>
+    <taxNumber>06-1663404</taxNumber>
+    <address>7272 Wisconsin Avenue, 21st Floor, Bethesda, MD 20814</address>
+    <country>US</country>
   </company>
   <company>
     <isin>GB00BZ3CNK81</isin>
@@ -3345,12 +3525,12 @@
     <country>FR</country>
   </company>
   <company>
-    <isin />
+    <isin>US8825081040</isin>
     <conid>13096</conid>
     <symbol>TXN</symbol>
-    <name>Texas Instruments Inc</name>
+    <name>TEXAS INSTRUMENTS INC</name>
     <taxNumber>75-0289970</taxNumber>
-    <address>P.o. Box 660199, Dallas, TX 75266</address>
+    <address>12500 TI Boulevard, Dallas, TX 75243</address>
     <country>US</country>
   </company>
   <company>
@@ -3530,6 +3710,15 @@
     <country>US</country>
   </company>
   <company>
+    <isin>US9229085538</isin>
+    <conid>31230302</conid>
+    <symbol>VNQ</symbol>
+    <name>VANGUARD REAL ESTATE ETF</name>
+    <taxNumber>20-1090288</taxNumber>
+    <address>100 Vanguard Blvd, Malvern, PA 19355</address>
+    <country>US</country>
+  </company>
+  <company>
     <isin />
     <symbol>VOE</symbol>
     <name>Voestalpine AG</name>
@@ -3700,6 +3889,15 @@
     <country>US</country>
   </company>
   <company>
+    <isin>US78464A8707</isin>
+    <conid>45540828</conid>
+    <symbol>XBI</symbol>
+    <name>SS SPDR S&amp;P BIOTECH ETF</name>
+    <taxNumber>811-08839</taxNumber>
+    <address>One Lincoln Street, Boston, MA 02111</address>
+    <country>US</country>
+  </company>
+  <company>
     <isin />
     <conid>119835414</conid>
     <symbol>XDDX</symbol>
@@ -3718,11 +3916,101 @@
     <country>US</country>
   </company>
   <company>
+    <isin>US81369Y1001</isin>
+    <conid>4215200</conid>
+    <symbol>XLB</symbol>
+    <name>SS MATERIALS SELECT SECTOR</name>
+    <taxNumber>811-08837</taxNumber>
+    <address>One Lincoln Street, Boston, MA 02111</address>
+    <country>US</country>
+  </company>
+  <company>
+    <isin>US81369Y5069</isin>
+    <conid>4215217</conid>
+    <symbol>XLE</symbol>
+    <name>SS ENERGY SELECT SECTOR</name>
+    <taxNumber>811-08837</taxNumber>
+    <address>One Lincoln Street, Boston, MA 02111</address>
+    <country>US</country>
+  </company>
+  <company>
+    <isin>US81369Y6059</isin>
+    <conid>4215220</conid>
+    <symbol>XLF</symbol>
+    <name>SS FINANCIAL SELECT SECTOR</name>
+    <taxNumber>811-08837</taxNumber>
+    <address>One Lincoln Street, Boston, MA 02111</address>
+    <country>US</country>
+  </company>
+  <company>
+    <isin>US81369Y7040</isin>
+    <conid>4215227</conid>
+    <symbol>XLI</symbol>
+    <name>SS INDUSTRIAL SELECT SECTOR</name>
+    <taxNumber>811-08837</taxNumber>
+    <address>One Lincoln Street, Boston, MA 02111</address>
+    <country>US</country>
+  </company>
+  <company>
+    <isin>US81369Y8030</isin>
+    <conid>4215230</conid>
+    <symbol>XLK</symbol>
+    <name>SS TECHNOLOGY SELECT SECTOR</name>
+    <taxNumber>811-08837</taxNumber>
+    <address>One Lincoln Street, Boston, MA 02111</address>
+    <country>US</country>
+  </company>
+  <company>
+    <isin>US81369Y3080</isin>
+    <conid>4215210</conid>
+    <symbol>XLP</symbol>
+    <name>SS CONSUMER STAPLES SEL SECT</name>
+    <taxNumber>811-08837</taxNumber>
+    <address>One Lincoln Street, Boston, MA 02111</address>
+    <country>US</country>
+  </company>
+  <company>
+    <isin>US81369Y8865</isin>
+    <conid>4215235</conid>
+    <symbol>XLU</symbol>
+    <name>ST SR UTL SL SE SPDR ETF-USD</name>
+    <taxNumber>811-08837</taxNumber>
+    <address>One Lincoln Street, Boston, MA 02111</address>
+    <country>US</country>
+  </company>
+  <company>
+    <isin>US81369Y2090</isin>
+    <conid>4215205</conid>
+    <symbol>XLV</symbol>
+    <name>SS HEALTH CARE SELECT SECTOR</name>
+    <taxNumber>811-08837</taxNumber>
+    <address>One Lincoln Street, Boston, MA 02111</address>
+    <country>US</country>
+  </company>
+  <company>
+    <isin>US81369Y4070</isin>
+    <conid>4215215</conid>
+    <symbol>XLY</symbol>
+    <name>SS CONSUMER DISC SELECT SECT</name>
+    <taxNumber>811-08837</taxNumber>
+    <address>One Lincoln Street, Boston, MA 02111</address>
+    <country>US</country>
+  </company>
+  <company>
     <isin />
     <symbol>XOM</symbol>
     <name>Exxon Mobil Corp</name>
     <taxNumber>135409005</taxNumber>
     <address>5959 Las Colinas Blvd, Irving, TX 75039-2298</address>
+    <country>US</country>
+  </company>
+  <company>
+    <isin>US77926X5023</isin>
+    <conid>677918165</conid>
+    <symbol>YBTC</symbol>
+    <name>ROUNDHILL BITCOIN CC STR ETF</name>
+    <taxNumber>US77926X2053</taxNumber>
+    <address>154 West 14th Street, 2nd Floor, New York, NY 10011</address>
     <country>US</country>
   </company>
   <company>
@@ -3750,41 +4038,5 @@
     <taxNumber>CHE101236480</taxNumber>
     <address>Austrasse 46 Zurich, 8045</address>
     <country>CH</country>
-  </company>
-  <company>
-    <isin>DK0062498333</isin>
-    <conid>652806383</conid>
-    <symbol>NOVOBc</symbol>
-    <name>Novo Nordisk A/S &#8211; Series B</name>
-    <taxNumber>DK24256790</taxNumber>
-    <address>Novo Alle 1, 2880 BAGSVAERD</address>
-    <country>DK</country>
-  </company>
-  <company>
-    <isin>GB00BP6MXD84</isin>
-    <conid>541411967</conid>
-    <symbol>SHELL</symbol>
-    <name>Shell plc</name>
-    <taxNumber>GB 235 7632 55</taxNumber>
-    <address>York Road Shell Centre London, SE1 7NA</address>
-    <country>GB</country>
-  </company>
-  <company>
-    <isin>SI0031101346</isin>
-    <conid>753471953</conid>
-    <symbol>LKPG</symbol>
-    <name>Luka Koper d.d.</name>
-    <taxNumber>SI89190033</taxNumber>
-    <address>Vojkovo nabrežje 38, 6501 Koper</address>
-    <country>SI</country>
-  </company>
-  <company>
-    <isin>FI0009013296</isin>
-    <conid>33815032</conid>
-    <symbol>NEF</symbol>
-    <name>NESTE OYJ</name>
-    <taxNumber>FI18523029</taxNumber>
-    <address>Keilaranta 21, 02150 Espoo</address>
-    <country>FI</country>
   </company>
 </companies>
