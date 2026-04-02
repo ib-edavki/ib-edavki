@@ -2648,6 +2648,15 @@
     <country>US</country>
   </company>
   <company>
+    <isin>DE0006969603</isin>
+    <conid>15050</conid>
+    <symbol>PUMd</symbol>
+    <name>PUMA SE</name>
+    <taxNumber>DE132490658</taxNumber>
+    <address>PUMA Way 1, 91074 Herzogenaurach</address>
+    <country>DE</country>
+  </company>
+  <company>
     <isin>US70450Y1038</isin>
     <conid>199169591</conid>
     <symbol>PYPL</symbol>
@@ -2999,6 +3008,15 @@
     <country>GB</country>
   </company>
   <company>
+    <isin>DE0007236101</isin>
+    <conid>14217</conid>
+    <symbol>SIEd</symbol>
+    <name>Siemens Aktiengesellschaft</name>
+    <taxNumber>DE129274202</taxNumber>
+    <address>Werner-von-Siemens-Straße 1, 80333 Munich</address>
+    <country>DE</country>
+  </company>
+  <company>
     <isin />
     <conid>423920215</conid>
     <symbol>SII</symbol>
@@ -3268,6 +3286,15 @@
     <taxNumber>8770013406</taxNumber>
     <address>Turkcell Kucukyali Plaza, Aydinevler, 34854 Maltepe/Istanbul</address>
     <country>TR</country>
+  </company>
+  <company>
+    <isin>US8923313071</isin>
+    <conid>275241</conid>
+    <symbol>TM</symbol>
+    <name>Toyota Motor Corporation</name>
+    <taxNumber>1180301018771</taxNumber>
+    <address>1 Toyota-Cho, Toyota City, Aichi Prefecture 471-8571</address>
+    <country>JP</country>
   </company>
   <company>
     <isin />
@@ -3541,6 +3568,15 @@
     <isin>DE0007664039</isin>
     <conid>14237</conid>
     <symbol>VOW3d</symbol>
+    <name>Volkswagen AG</name>
+    <taxNumber>DE115235681</taxNumber>
+    <address>Berliner Ring 2, 38440 Wolfsburg</address>
+    <country>DE</country>
+  </company>
+  <company>
+    <isin>DE0007664039</isin>
+    <conid>14232</conid>
+    <symbol>VOWd</symbol>
     <name>Volkswagen AG</name>
     <taxNumber>DE115235681</taxNumber>
     <address>Berliner Ring 2, 38440 Wolfsburg</address>
