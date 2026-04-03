@@ -24,6 +24,7 @@ userAgent = 'ib-edavki'
 
 stockSplits = defaultdict(list)
 cusipIsinChanges = defaultdict(list)
+merger_actions = defaultdict(list)
 
 
 def getSplitMultiplier(symbol, conid, date, time):
@@ -95,6 +96,53 @@ def updateChangedCusipIsin(corporateActions):
             cusipIsinOld = descriptionSearch.group(1)
             cusipIsinNew = descriptionSearch.group(2)
             cusipIsinChanges[cusipIsinOld] = cusipIsinNew
+
+
+def addMergers(corporateActions):
+    for action in corporateActions:
+        if action.attrib['type'] == 'TC' and 'MERGED' in action.attrib['description']:
+            actionID = action.attrib['actionID']
+            if actionID in merger_actions:
+                # We have both parts of the merger
+                action1 = merger_actions.pop(actionID)
+                action2 = action
+                
+                # Figure out which is old and which is new
+                if float(action1.attrib['quantity']) < 0:
+                    old_action = action1
+                    new_action = action2
+                else:
+                    old_action = action2
+                    new_action = action1
+
+                # Extract ratio
+                # LCUW(LU1781541179) MERGED(Acquisition) WITH IE000BI8OT95 1451132 FOR 10000000
+                m = re.search(r'(\d+) FOR (\d+)', old_action.attrib['description'])
+                if not m:
+                    continue
+                
+                multiplier = float(m.group(1)) / float(m.group(2))
+
+                old_conid = old_action.attrib['conid']
+                old_isin = old_action.attrib['securityID']
+                new_isin = new_action.attrib['securityID']
+
+                try:
+                    strDateTime = old_action.attrib["dateTime"].split(";")
+                    dateTime = datetime.datetime.strptime(strDateTime[0] + " " + strDateTime[1], "%Y%m%d %H%M%S")
+                except:
+                    continue
+
+                # Store the merger info
+                # Using stockSplits dict to store multiplier.
+                stockSplits[old_conid].append({"dateTime": dateTime, "multiplier": multiplier})
+                
+                # Using cusipIsinChanges to handle the ISIN change.
+                cusipIsinChanges[old_isin] = new_isin
+
+            else:
+                merger_actions[actionID] = action
+
 
 
 """ Gets the currency rate for a given date and currency. If no rate exists for a given
@@ -364,6 +412,7 @@ def main():
             if corporateActions is not None:
                 addStockSplits(corporateActions)
                 updateChangedCusipIsin(corporateActions)
+                addMergers(corporateActions)
 
     if test == True:
         statementStartDate = str(reportYear + testYearDiff) + "0101"
