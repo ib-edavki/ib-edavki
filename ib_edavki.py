@@ -35,10 +35,15 @@ def getSplitMultiplier(symbol, conid, date, time):
     if key not in stockSplits:
         return multiplier
 
-    for splitData in stockSplits[key]:
-        if datetime.datetime.strptime(date + " " + time, "%Y%m%d %H%M%S") < splitData["dateTime"]:
-            multiplier *= splitData["multiplier"]
-
+    # Only apply split adjustment to trades BEFORE the split date
+    if len(stockSplits[key]) > 0:
+        tradeDateTime = datetime.datetime.strptime(date + " " + time, "%Y%m%d %H%M%S")
+        splitDateTime = stockSplits[key][0]["dateTime"]
+        
+        # If trade is BEFORE split, return the multiplier to adjust price
+        if tradeDateTime < splitDateTime:
+            return stockSplits[key][0]["multiplier"]
+    
     return multiplier
 
 
@@ -64,7 +69,7 @@ def addStockSplits(corporateActions):
             try:
                 strDateTime = action.attrib["dateTime"].split(";")
                 strDate = strDateTime[0]
-                strTime = strDateTime[1]
+                strTime = strDateTime[1] if len(strDateTime) > 1 else "000000"
             except:
                 print("Stock split Corporate Action for conid='" + conid + "' (symbol '" + symbol + "') has issues with dateTime attributes (" + action.attrib["dateTime"] + "), which is a crucial stock split information!")
                 return
@@ -74,12 +79,9 @@ def addStockSplits(corporateActions):
                 print("Stock split Corporate Action for conid='" + conid + "' (symbol '" + symbol + "') has issues with date and time attribute (" + strDate, strTime + "), which is a crucial stock split information!")
                 return               
 
-            # check if the same split was added from a different report
-            for split in stockSplits[key]:
-                if split["dateTime"] == dateTime and split["multiplier"] == multiplier:
-                    continue
-
-            stockSplits[key].append({"dateTime": dateTime, "multiplier": multiplier})
+            # Only add one split per security - skip if already exists
+            if key not in stockSplits:
+                stockSplits[key] = [{"dateTime": dateTime, "multiplier": multiplier}]
 
 
 def getLatestCusipIsin(cusipIsin):
@@ -397,7 +399,7 @@ def main():
             try:
                 dateTime = ibTrade.attrib["dateTime"].split(";")
                 date = dateTime[0]
-                time = dateTime[1]
+                time = dateTime[1] if len(dateTime) > 1 else "000000"
             except:
                 date = ibTrade.attrib["tradeDate"]
                 try:
@@ -432,8 +434,7 @@ def main():
                     trade["symbol"], trade["conid"], date, time
                 )
 
-                trade["quantity"] *= splitMultiplier
-                trade["tradePrice"] /= splitMultiplier
+                trade["tradePrice"] /= splitMultiplier if splitMultiplier != 1 else 1
 
                 if ibTrade.attrib["securityID"] != "":
                     trade["securityID"] = ibTrade.attrib["securityID"]
@@ -481,21 +482,13 @@ def main():
                     lastTrade["openTransactionIds"] = {}
                 tid = ibTrade.attrib["transactionID"]
 
-                splitMultiplier = getSplitMultiplier(
-                    ibTrade.attrib["symbol"], ibTrade.attrib["conid"], date, time
-                )
-
                 if tid not in lastTrade["openTransactionIds"]:
                     lastTrade["openTransactionIds"][tid] = {
                         "openDateTime": ibTrade.attrib["openDateTime"],
-                        "quantity": (
-                        float(ibTrade.attrib["quantity"]) * splitMultiplier
-                        ),
+                        "quantity": float(ibTrade.attrib["quantity"]),
                     }
                 else:
-                    lastTrade["openTransactionIds"][tid]["quantity"] += (
-                        float(ibTrade.attrib["quantity"]) * splitMultiplier
-                    )
+                    lastTrade["openTransactionIds"][tid]["quantity"] += float(ibTrade.attrib["quantity"])
 
     """
         Merge tradesByIsin, tradesByCusip, tradesBySecurityId, tradesByConid  and tradesBySymbol
